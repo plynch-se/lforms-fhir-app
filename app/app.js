@@ -1,5 +1,8 @@
 'use strict';
 
+window.LForms = require('lforms'); // also sets window.angular
+require('./app.css');
+
 angular.module('lformsApp', [
   'ngCookies',
   'ngResource',

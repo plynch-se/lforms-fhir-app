@@ -10,11 +10,13 @@ exports.config = {
   ],
 
   capabilities: {
-    //'browserName': 'firefox'
+    'browserName': 'firefox',
+    /*
     'browserName': 'chrome',
     'chromeOptions': {
       args: ['disable-infobars', 'allow-insecure-localhost']
     }
+    */
   },
 
   baseUrl: 'http://localhost:8000/',
