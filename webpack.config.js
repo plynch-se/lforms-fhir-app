@@ -1,10 +1,20 @@
+html-webpack-include-assets-plugin -- to add vendor.js,css to templates
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin'); // Excludes momentjs locales.
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
+/**
+ *  Creates a configuration object with settings common to both vendor.js and
+ *  app.js.
+ */
 function commonConfig() {
-  return {
+  var cfg = {
     node: {
       fs: "empty"
     },
     output: {
-      path: __dirname,
+      path: require('path').resolve(__dirname, './dist/lforms-fhir-app')
     },
     module: {
       rules: [
@@ -27,33 +37,12 @@ function commonConfig() {
       ]
     }
   }
-}
-
-function makeConfigs(env) {
-
-  const MomentLocalesPlugin = require('moment-locales-webpack-plugin'); // Excludes momentjs locales.
-  const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-
-  let configs = [];
-
-  let appConfig = commonConfig();
-  appConfig.entry = './app/app.js';
-  //appConfig.output.filename = require('path').resolve(__dirname,
-  //  './dist/lforms-fhir-app/app.js');
-  appConfig.output.path = require('path').resolve(__dirname,
-    './dist/lforms-fhir-app');
-  appConfig.output.filename = '[name]_[hash].js';
-  appConfig.devtool = 'source-map';
-  appConfig.mode = 'production';
-  const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-  appConfig.plugins = [
-    new MiniCssExtractPlugin({
-      filename: "[name]_[hash].css"
-    }),
-    new MomentLocalesPlugin(),
-    new CleanWebpackPlugin()
+  cfg.devtool = 'source-map';
+  cfg.mode = 'production';
+  cfg.plugins = [
+    new MomentLocalesPlugin()
   ];
-  appConfig.module.rules.push({
+  cfg.module.rules.push({
     test: /\.css$/,
   //  include: /node_modules/,
     use: [
@@ -69,7 +58,7 @@ function makeConfigs(env) {
       'css-loader' // resolves paths for CSS files in require/import
     ]
   });
-  appConfig.module.rules.push({
+  cfg.module.rules.push({
     test: /glyphicons.*\.(eot|svg|ttf|woff2?)$/,
     use: [{
       loader: 'file-loader',
@@ -80,7 +69,7 @@ function makeConfigs(env) {
       }
     }]
   });
-  appConfig.module.rules.push({
+  cfg.module.rules.push({
     test: /\.(png|svg|jpg|gif)$/,
     use: [{
       loader: 'file-loader',
@@ -91,8 +80,40 @@ function makeConfigs(env) {
       }
     }]
   });
-  configs.push(appConfig);
+  return cfg;
+}
 
+function makeConfigs(env) {
+  let configs = [];
+console.log("env="+env);
+  if (env != 'build=app') { // the signal to skip the node modules
+    let vendorConfig = commonConfig(); // node modules
+    vendorConfig.entry = './app/vendor.js';
+    vendorConfig.output.filename = 'vendor_[hash].js',
+    vendorConfig.plugins.push(new CleanWebpackPlugin({verbose: true}));
+    vendorConfig.plugins.push(
+      new MiniCssExtractPlugin({
+        filename: "vendor_[hash].css"
+      })
+    );
+    configs.push(vendorConfig);
+  }
+
+  let appConfig = commonConfig();
+  appConfig.entry = './app/app.js';
+  appConfig.output.filename = 'app_[hash].js',
+  appConfig.plugins.push(new HtmlWebpackPlugin({template: 'app/index.html'}));
+  appConfig.plugins.push(new HtmlWebpackPlugin({template: 'app/launch.html'}));
+  appConfig.plugins.push(
+    new MiniCssExtractPlugin({
+      filename: "app_[hash].css"
+    })
+  );
+  appConfig.externals = { // excludes packages from build
+    'lforms': 'LForms'
+  };
+  configs.push(appConfig);
+console.log("%%% building "+configs.length);
   return configs;
 }
 module.exports = makeConfigs;
