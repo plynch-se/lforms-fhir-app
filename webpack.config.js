@@ -1,8 +1,8 @@
-html-webpack-include-assets-plugin -- to add vendor.js,css to templates
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin'); // Excludes momentjs locales.
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
 
 /**
  *  Creates a configuration object with settings common to both vendor.js and
@@ -85,8 +85,7 @@ function commonConfig() {
 
 function makeConfigs(env) {
   let configs = [];
-console.log("env="+env);
-  if (env != 'build=app') { // the signal to skip the node modules
+  if (!env  || env.build!='app') { // the signal to skip the node modules
     let vendorConfig = commonConfig(); // node modules
     vendorConfig.entry = './app/vendor.js';
     vendorConfig.output.filename = 'vendor_[hash].js',
@@ -99,21 +98,28 @@ console.log("env="+env);
     configs.push(vendorConfig);
   }
 
-  let appConfig = commonConfig();
-  appConfig.entry = './app/app.js';
-  appConfig.output.filename = 'app_[hash].js',
-  appConfig.plugins.push(new HtmlWebpackPlugin({template: 'app/index.html'}));
-  appConfig.plugins.push(new HtmlWebpackPlugin({template: 'app/launch.html'}));
-  appConfig.plugins.push(
-    new MiniCssExtractPlugin({
-      filename: "app_[hash].css"
-    })
-  );
-  appConfig.externals = { // excludes packages from build
-    'lforms': 'LForms'
-  };
-  configs.push(appConfig);
-console.log("%%% building "+configs.length);
+  if (!env  || env.build!='vendor') { // the signal to skip the node modules
+    let appConfig = commonConfig();
+    appConfig.entry = './app/app.js';
+    appConfig.output.filename = 'app_[hash].js',
+    appConfig.plugins.push(new HtmlWebpackPlugin({template: 'app/index.html'}));
+    appConfig.plugins.push(new HtmlWebpackPlugin({template: 'app/launch.html'}));
+    appConfig.plugins.push(new HtmlWebpackIncludeAssetsPlugin({
+      assets: [{ path: 'dist/lforms-fhir-app', glob: 'vendor*.js', globPath:
+        'dist/lforms-fhir-app' }],
+      assets: [{ path: 'dist/lforms-fhir-app', glob: 'vendor*.css', globPath:
+        'dist/lforms-fhir-app' }]
+    }));
+    appConfig.plugins.push(
+      new MiniCssExtractPlugin({
+        filename: "app_[hash].css"
+      })
+    );
+    appConfig.externals = { // excludes packages from build
+      'lforms': 'LForms'
+    };
+    configs.push(appConfig);
+  }
   return configs;
 }
 module.exports = makeConfigs;
