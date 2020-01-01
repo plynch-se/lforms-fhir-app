@@ -1,7 +1,17 @@
 'use strict';
 
-window.LForms = require('lforms'); // also sets window.angular
+import './fhir-client.js';
+
+//window.LForms = require('lforms'); // also sets window.angular
+//import * as window.LForms from 'lforms'; // also sets window.angular
+
+import 'lforms'; // also sets window.angular
+//import * as LForms from 'lforms'; // also sets window.angular
+//window.LForms = LForms;
 require('./app.css');
+require('angular-cookies');
+require('angular-resource');
+require('angular-sanitize');
 
 angular.module('lformsApp', [
   'ngCookies',
