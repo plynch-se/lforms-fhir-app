@@ -69,18 +69,18 @@ cfg.module.rules.push({
     loader: 'file-loader',
     options: {
       name: nameFormat,
-      outputPath: 'styles/fonts',
+      outputPath: 'fonts',
       publicPath: 'fonts'
     }
   }]
 });
 cfg.module.rules.push({
-  test: /\.(png|svg|jpg|gif)$/,
+  test: /\.(png|svg|jpg|gif|ico)$/,
   use: [{
     loader: 'file-loader',
     options: {
       name: nameFormat,
-      outputPath: 'styles/images',
+      outputPath: 'images',
       publicPath: 'images'
     }
   }]
