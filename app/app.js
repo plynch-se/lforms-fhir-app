@@ -15,6 +15,8 @@ require('angular-material');
 require('angular-material/angular-material.css');
 require('angular-file-upload');
 
+require('bootstrap');
+
 //window.LForms = require('lforms'); // also sets window.angular
 //import * as window.LForms from 'lforms'; // also sets window.angular
 
