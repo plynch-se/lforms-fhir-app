@@ -65,7 +65,7 @@
     "postupdate-deps": "bower update",
     "build": "webpack --config webpack.prod.js",
     "start": "webpack-dev-server --config webpack.dev.js --open-page lforms-fhir-app/ --port 8000 --open",
-    "start-dist": "http-server -p 8000 -c-1 dist",
+    "start-dist": "http-server dist -p 8000 -c-1 -o",
     "update-webdriver": "webdriver-manager update --versions.standalone 3.141.59 # skip broken 4.0.0-alpha version",
     "test": "protractor e2e-tests/protractor.conf.js"
   }
