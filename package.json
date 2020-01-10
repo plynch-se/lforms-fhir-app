@@ -64,8 +64,7 @@
     "update-deps": "npm update",
     "postupdate-deps": "bower update",
     "build": "webpack --config webpack.prod.js",
-    "start": "webpack-dev-server --config webpack.dev.js --openPage /lforms-fhir-app/ --port 8000 --open",
-    "start-old": "echo 'TBD - change to webpack-dev-server; Website starting at http://localhost:8000/lforms-fhir-app'; http-server -p 8000 -c-1 .",
+    "start": "webpack-dev-server --config webpack.dev.js --open-page lforms-fhir-app/ --port 8000 --open",
     "start-dist": "http-server -p 8000 -c-1 dist",
     "update-webdriver": "webdriver-manager update --versions.standalone 3.141.59 # skip broken 4.0.0-alpha version",
     "test": "protractor e2e-tests/protractor.conf.js"
