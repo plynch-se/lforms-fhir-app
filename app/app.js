@@ -66,4 +66,6 @@ LFormsUtil.copyToClipboard = function(elementId) {
 
 require('./webpack-index.js'); // files from app directory
 
+require('../.tmp/templates.js'); // output of grunt ngtemplates
+
 

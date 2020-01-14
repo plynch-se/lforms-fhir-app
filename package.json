@@ -63,7 +63,7 @@
     "postinstall": "npm run update-webdriver",
     "update-deps": "npm update",
     "postupdate-deps": "bower update",
-    "build": "webpack --config webpack.prod.js",
+    "build": "grunt ngtemplates && webpack --config webpack.prod.js",
     "start": "webpack-dev-server --config webpack.dev.js --open-page lforms-fhir-app/ --port 8000 --open",
     "start-dist": "http-server dist -p 8000 -c-1 -o",
     "update-webdriver": "webdriver-manager update --versions.standalone 3.141.59 # skip broken 4.0.0-alpha version",
