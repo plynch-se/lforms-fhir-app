@@ -37,6 +37,7 @@
     "grunt-shell": "^2.1.0",
     "grunt-usemin": "^3.1.1",
     "grunt-wiredep": "^3.0.1",
+    "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
     "html-webpack-tags-plugin": "^2.0.17",
     "http-server": "^0.11.1",
@@ -62,8 +63,8 @@
   "scripts": {
     "postinstall": "npm run update-webdriver",
     "update-deps": "npm update",
-    "postupdate-deps": "bower update",
-    "build": "grunt ngtemplates && webpack --config webpack.prod.js",
+    "build:insertVersionIntoPage": "v=`node -e 'console.log(require(\"./package.json\").version)'` && sed -i e s/VERSION_PLACEHOLDER/$v/ dist/lforms-fhir-app/main.*.js",
+    "build": "grunt ngtemplates && webpack --config webpack.prod.js && npm run build:insertVersionIntoPage",
     "start": "webpack-dev-server --config webpack.dev.js --open-page lforms-fhir-app/ --port 8000 --open",
     "start-dist": "http-server dist -p 8000 -c-1 -o",
     "update-webdriver": "webdriver-manager update --versions.standalone 3.141.59 # skip broken 4.0.0-alpha version",
