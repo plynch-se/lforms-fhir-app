@@ -4,18 +4,17 @@
 module.exports = function (grunt) {
   // Load grunt tasks automatically, when needed
   require('jit-grunt')(grunt, {
-    useminPrepare: 'grunt-usemin',
+//    useminPrepare: 'grunt-usemin',
     ngtemplates: 'grunt-angular-templates',
-    protractor: 'grunt-protractor-runner',
-    injector: 'grunt-injector',
+//    protractor: 'grunt-protractor-runner',
+//    injector: 'grunt-injector',
   });
 
   // Time how long tasks take. Can help when optimizing build times
-  require('time-grunt')(grunt);
+//  require('time-grunt')(grunt);
 
   // Define the configuration for all the tasks
   grunt.initConfig({
-
     // Project settings
     pkg: grunt.file.readJSON('package.json'),
     yeoman: {
@@ -24,6 +23,7 @@ module.exports = function (grunt) {
       dist: 'dist/lforms-fhir-app',
     },
 
+/*
     // Empties folders to start fresh
     clean: {
       dist: {
@@ -49,7 +49,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '.tmp/',
-          src: '{,*/}*.css',
+          src: '{,*\/}*.css',
           dest: '.tmp/'
         }]
       }
@@ -92,13 +92,14 @@ module.exports = function (grunt) {
         }
       }
     },
-
+*/
     shell: {
       insertVersionIntoPage: {
         command: 'v=`node -e \'console.log(require("./package.json").version)\'` && '+
           'sed -i s/VERSION_PLACEHOLDER/$v/ dist/lforms-fhir-app/*.app.js'
       }
     },
+/*
 
     // Reads HTML for usemin blocks to enable smart builds that automatically
     // concat, minify and revision files. Creates configurations in memory so
@@ -129,27 +130,27 @@ module.exports = function (grunt) {
         target: '<%= yeoman.client %>/.'
       }
     },
-
+*/
     // Performs rewrites based on rev and the useminPrepare configuration
-    usemin: {
-      html: ['<%= yeoman.dist %>/*.html'],
-      css: ['<%= yeoman.dist %>/*.css'],
+//    usemin: {
+//      html: ['<%= yeoman.dist %>/*.html'],
+//      css: ['<%= yeoman.dist %>/*.css'],
       // js: ['<%= yeoman.dist %>/*.js'], -- we are not currently doing revved images
-      options: { /*
-        assetsDirs: [
-          '<%= yeoman.dist %>/public',
-          '<%= yeoman.dist %>/public/assets/images'
-        ],
-        // This is so we update image references in our ng-templates
-        patterns: {
-          js: [
-            [/(assets\/images\/.*?\.(?:gif|jpeg|jpg|png|webp|svg))/gm, 'Update the JS to reference our revved images']
-          ]
-        }
-        */
-      }
-    },
-
+//      options: { /*
+//        assetsDirs: [
+//          '<%= yeoman.dist %>/public',
+//          '<%= yeoman.dist %>/public/assets/images'
+//        ],
+//        // This is so we update image references in our ng-templates
+//        patterns: {
+//          js: [
+//            [/(assets\/images\/.*?\.(?:gif|jpeg|jpg|png|webp|svg))/gm, 'Update the JS to reference our revved images']
+//          ]
+//        }
+//        */
+//      }
+//    },
+/*
     // Allow the use of non-minsafe AngularJS files. Automatically makes it
     // minsafe compatible so Uglify does not destroy the ng references
     ngAnnotate: {
@@ -162,7 +163,7 @@ module.exports = function (grunt) {
         }]
       }
     },
-
+*/
     // Package all the html partials into a single javascript payload
     ngtemplates: {
       options: {
@@ -185,105 +186,9 @@ module.exports = function (grunt) {
       }
     },
 
-    // Copies remaining files to places other tasks can use
-    copy: {
-      options: {
-        mode: true,
-      },
-      dist: {
-        files: [{
-          expand: true,
-          dot: true,
-          timestamp: true,
-          cwd: '<%= yeoman.client %>',
-          dest: '<%= yeoman.dist %>',
-          filter: function(src) {
-            // Only font and image files are needed from the bower_components
-            // directories -- except that we also need fhirpath.min.js.
-            // Also, for jquery themes, only pick out the redmond theme.
-            return src.match(/fhirpath.min.js/) || !src.match(/node_modules/) &&
-             !src.match(/bower_components.*bower_components/) &&
-             (!src.match(/bower_components/) ||
-              src.match(/\.(eot|svg|ttf|woff|png|jpg|gif)/) &&
-              (!src.match('jquery-ui/themes') || src.match('redmond')));
-            // When bower components are linked from development versions,
-            // filter out the linked components' bower_components,
-            // node_modules, and .git directories
-            //return !src.match(/bower_components.*(bower_components|node_modules|.git)/)
-          },
-          src: [
-            '*.{ico,png,txt}',
-            '.htaccess',
-            'bower_components/**/**',
-            'assets/images/{,*/}*.{jpg,gif}',
-            'assets/fonts/**/*',
-            'launch.html',
-            'index.html',
-            'ga.js'   // user supplied google analytics code
-          ]
-        }, {
-          expand: true,
-          cwd: '.tmp/images',
-          timestamp: true,
-          dest: '<%= yeoman.dist %>/public/assets/images',
-          src: ['generated/*']
-        }]
-      },
-      styles: {
-        expand: true,
-        cwd: '<%= yeoman.client %>',
-        dest: '.tmp/',
-        src: ['{app,components}/**/*.css']
-      }
-    },
-
-    injector: {
-      options: {
-
-      },
-      // Inject application script files into index.html (doesn't include bower)
-      scripts: {
-        options: {
-          transform: function(filePath) {
-            filePath = filePath.replace('/client/', '');
-            filePath = filePath.replace('/.tmp/', '');
-            return '<script src="' + filePath + '"></script>';
-          },
-          starttag: '<!-- injector:js -->',
-          endtag: '<!-- endinjector -->'
-        },
-        files: {
-          '<%= yeoman.client %>/index.html': [
-              ['{.tmp,<%= yeoman.client %>}/{app,components}/**/*.js',
-               '!{.tmp,<%= yeoman.client %>}/app/app.js',
-               '!{.tmp,<%= yeoman.client %>}/{app,components}/**/*.spec.js',
-               '!{.tmp,<%= yeoman.client %>}/{app,components}/**/*.mock.js']
-            ]
-        }
-      },
-
-      // Inject component css into index.html
-      css: {
-        options: {
-          transform: function(filePath) {
-            filePath = filePath.replace('/client/', '');
-            filePath = filePath.replace('/.tmp/', '');
-            return '<link rel="stylesheet" href="' + filePath + '">';
-          },
-          starttag: '<!-- injector:css -->',
-          endtag: '<!-- endinjector -->'
-        },
-        files: {
-          '<%= yeoman.client %>/index.html': [
-            '<%= yeoman.client %>/{app,components}/**/*.css'
-          ]
-        }
-      }
-    }
-
   });
 
-
+/*
   grunt.registerTask('prune_modules', function() {
     grunt.log.ok('Prune the dev dependencies from dist');
     var exec = require('child_process').exec;
@@ -317,4 +222,5 @@ module.exports = function (grunt) {
   grunt.registerTask('default', [
     'build'
   ]);
+*/
 };
