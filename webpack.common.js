@@ -86,6 +86,18 @@ cfg.module.rules.push({
   }]
 });
 
+cfg.module.rules.push({
+  test: /\.html$/,
+  use: [{
+    loader: 'html-loader',
+    options: {
+      name: nameFormat,
+      outputPath: 'images',
+      publicPath: 'images'
+    }
+  }]
+});
+
 
 function makeConfigs(env) {
   let appConfig = cfg;
