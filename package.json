@@ -1,47 +1,62 @@
 {
   "name": "lforms-fhir-app",
-  "version": "0.14.2",
+  "version": "3.3.3",
   "description": "A SMART on FHIR app for lforms",
   "repository": "https://github.com/lhncbc/lforms-fhir-app",
+  "source": [
+    ".tmp/index.html",
+    ".tmp/launch.html"
+  ],
+  "config": {
+    "serverPort": "8000"
+  },
+  "alias": {
+    "process": false
+  },
+  "devDependenciesComments": [
+    "autocomplete-lhc is included only for its test helpers; for the app it is pulled in through lforms"
+  ],
   "devDependencies": {
-    "bower": "^1.8.8",
-    "grunt": "^1.0.4",
-    "grunt-angular-templates": "^1.2.0",
-    "grunt-autoprefixer": "^3.0.4",
-    "grunt-cli": "^1.3.1",
-    "grunt-contrib-clean": "^2.0.0",
-    "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-cssmin": "~0.9.0",
-    "grunt-contrib-uglify": "^4.0.0",
-    "grunt-injector": "^1.1.0",
-    "grunt-ng-annotate": "^3.0.0",
-    "grunt-rev": "^0.1.0",
-    "grunt-shell": "^2.1.0",
-    "grunt-usemin": "^3.1.1",
-    "grunt-wiredep": "^3.0.1",
-    "http-server": "^0.11.1",
+    "autocomplete-lhc": "^18.2.0",
+    "cross-env": "^7.0.3",
+    "cross-spawn": "^7.0.3",
+    "cypress": "^13.6.6",
+    "http-server": "^14.1.0",
     "jasmine-core": "^3.2.1",
-    "jit-grunt": "^0.10.0",
-    "karma": "^3.0.0",
+    "jasmine-spec-reporter": "^4.2.1",
     "karma-chrome-launcher": "^2.2.0",
     "karma-firefox-launcher": "^1.1.0",
     "karma-jasmine": "^1.1.2",
     "karma-junit-reporter": "^1.2.0",
-    "time-grunt": "^1.4.0",
-    "tmp": "0.0.33"
+    "parcel": "^2.1.1",
+    "rimraf": "^3.0.2",
+    "ssi": "^0.3.0",
+    "start-server-and-test": "^2.0.3",
+    "superagent": "^9.0.1",
+    "tmp": "^0.2.1"
   },
   "scripts": {
-    "postinstall": "bower install && npm run update-webdriver",
-    "update-deps": "npm update",
-    "postupdate-deps": "bower update",
-    "build": "grunt build",
-    "start": "echo 'Website starting at http://localhost:8000/lforms-fhir-app'; http-server -p 8000 -c-1 .",
-    "start-dist": "http-server -p 8000 -c-1 dist",
-    "update-webdriver": "webdriver-manager update --versions.standalone 3.141.59 # skip broken 4.0.0-alpha version",
-    "test": "protractor e2e-tests/protractor.conf.js"
+    "build:clean": "rimraf dist .tmp",
+    "build:pages": "node -e \"(new (require('ssi'))('source/html-ssi', '.tmp', '/*.html', true)).compile()\"",
+    "build:preparcel": "npm run build:clean && npm run build:pages",
+    "build-dev": "npm run build:preparcel && cross-env PARCEL_WORKER_BACKEND=process && node bin/cross-var.js parcel build --dist-dir dist/$npm_package_name --public-url . --no-optimize",
+    "build:parcel": "cross-env PARCEL_WORKER_BACKEND=process && node bin/cross-var.js parcel build --dist-dir dist/$npm_package_name --public-url .",
+    "build:version": "node bin/build-version.js",
+    "build": "npm run build:preparcel && npm run build:parcel && npm run build:version",
+    "prestart": "node bin/cross-var.js echo \"Website starting at http://localhost:8000/$npm_package_name\"",
+    "start": "node bin/cross-var.js http-server -s -o $npm_package_name -a localhost -p $npm_package_config_serverPort -c-1 dist",
+    "start-no-open": "node bin/cross-var.js http-server -s -a localhost -p $npm_package_config_serverPort -c-1 dist",
+    "start-public": "node bin/cross-var.js http-server -s -o $npm_package_name -p $npm_package_config_serverPort -c-1 dist",
+    "prestart-public": "npm run prestart",
+    "test": "node bin/cross-var.js start-server-and-test start-no-open http://localhost:$npm_package_config_serverPort cy:run",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run"
   },
   "dependencies": {
-    "protractor": "^5.4.2"
+    "bootstrap": "^3.4.1",
+    "escape-html": "^1.0.3",
+    "fhirclient": "^2.4.0",
+    "lforms-loader": "^3.0.0",
+    "lforms-updater": "^30.0.0"
   }
 }

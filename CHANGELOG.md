@@ -3,6 +3,197 @@
 This log documents the significant changes for each release.
 This project follows [Semantic Versioning](http://semver.org/).
 
+## [3.3.3] 2024-12-03
+### Fixed
+- Escape certain characters in FHIR search parameters.
+
+## [3.3.2] 2024-06-28
+### Changed
+- Simplify lforms API calls when showing a saved questionnaire response.
+
+## [3.3.1] 2024-05-10
+### Added
+- Set subject and author when showing questionnaire response.
+
+## [3.3.0] 2024-03-25
+### Added
+- Scripts for Windows environment.
+
+## [3.2.0] 2024-02-27
+### Changed
+- updated lforms-loader version.
+
+## [3.1.0] 2023-08-22
+### Changed
+- Now loads and uses the latest LHC-Forms version automatically.
+
+## [3.0.3] 2023-05-10
+### Changed
+- Updated lforms to v33.3.4, which fixed a bug that values in
+  QuestionnaireResponse are not displayed when the values are
+  from answerValueSet in the Questionnaire.
+
+## [3.0.2] 2023-03-21
+### Changed
+- Updated nodejs to v18.14.2.
+- Updated lforms to v33.3.2.
+
+## [3.0.1] 2022-12-09
+### Changed
+- Updated website header and footer and logo.
+
+## [3.0.0] 2022-11-21
+### Changed
+- Updated lforms to 33.0.0, which removed support for IE 11.
+
+## [2.0.7] - 2022-11-08
+### Fixed
+- Issue with Cache-Control header: some FHIR servers do not permit the
+  Cache-Control header on CORS requests.
+
+## [2.0.6] - 2022-09-26
+### Fixed
+- Fixed the link to the 'samples' page.
+
+## [2.0.5] - 2022-09-12
+### Updated
+- LForms to 32.0.2.
+
+## [2.0.4] - 2022-08-10
+### Changed
+- Use shared header and footer from CTSS.
+
+## [2.0.3] - 2022-06-14
+### Updated
+- LForms to 30.3.0.
+
+## [2.0.2] - 2022-04-07
+### Fixed
+- LForms.lformsVersion was showing 'undefined' after the lforms update in 2.0.1.
+
+## [2.0.1] - 2022-04-07
+### Changed
+- Updated fhir-client.js to 2.4.0.
+- Updated lforms to 30.1.3.
+
+## [2.0.0] - 2022-01-07
+### Changed
+- Rewrite of app to remove AngularJs, which is no longer supported.
+- Updated to use the web component version of LForms (still in beta).
+
+## [1.3.1] - 2021-06-29
+### Fixed
+- Added a missing icon in production mode.
+
+## [1.3.0] - 2021-05-13
+### Added
+- Added the display of the pratitioner's name on the page
+
+## [1.2.4] - 2021-05-05
+### Changed
+- Updated lforms to 29.0.3
+
+## [1.2.3] - 2021-04-06
+### Changed
+- Updated NIH/NLM/LHC logo;
+- Removed favicon.ico
+
+## [1.2.2] - 2021-03-29
+### Fixed
+- Fixe a bug in FHIR delete operation that now takes a URL string
+  instead of an object.
+### Updated
+- Update fhirclient.js to 2.3.11
+
+## [1.2.1] - 2021-03-05
+### Fixed
+- Updated lforms to 28.1.4 and adjusted tests and test Questionnaires.
+
+## [1.2.0] - 2021-1-13
+### Changed
+- Updated lforms to 28.1.1.
+
+## [1.1.0] - 2020-12-15
+### Changed
+- Added starting HTTP server before running tests
+
+## [1.0.0] - 2020-12-04
+### Changed
+- Updated the SMART on FHIR client ('client-js', a.k.a. npm package fhirclient)
+  to version 2.  (See http://docs.smarthealthit.org/client-js).
+- Updated LForms to version 27.0.0.
+
+## [0.14.17] - 2020-11-12
+### Fixed
+- Replaced value[x] with value in FHIRPath expressions in tests where possible
+  (see e2e-tests/data/R4/*.json).
+
+## [0.14.16] - 2020-09-08
+### Changed
+- Updated LForms to version 25.1.5.
+
+## [0.14.15] - 2020-07-21
+### Changed
+- Updated LForms to version 25.1.2.
+
+## [0.14.14] - 2020-06-18
+### Changed
+- Updated LForms to version 25.0.0.
+
+## [0.14.13] - 2020-06-12
+### Fixed
+- Removed a 'Glasgow coma scale' Questionnaire from the featured list
+  of our R4 server, because the Questionnaire with that ID was missing,
+  and the score rule feature was adequately demonstrated by the PHQ-9 form.
+
+## [0.14.12] - 2020-05-08
+### Changed
+- Removed deprecated json3 package dependency
+
+## [0.14.11] - 2020-05-07
+### Changed
+- Updated lforms to 24.1.3
+### Fixed
+- Added missed polyfills for IE11
+
+## [0.14.10] - 2020-04-21
+### Fixed
+- Fixed broken CSS resource links.
+
+## [0.14.9] - 2020-04-02
+### Updated
+- Updated lforms to 23.0.1, and the test/example data files.
+
+## [0.14.8] - 2020-03-13
+### Added
+- Updated lforms to 22.0.0, and introduced the use of a new package, lforms-updater,
+  which takes care of breaking changes from lforms to support older form
+  definitions and lforms-generated FHIR resources.
+
+## [0.14.7] - 2020-02-27
+### Fixed
+- Fixed a bug that prevented entry of an off-list FHIR Server.
+- Updated lforms to 21.1.0
+
+## [0.14.6] - 2020-02-26
+### Fixed
+- Updated lforms package
+
+## [0.14.5] - 2020-02-25
+### Fixed
+- Fixed protractor tests.
+
+## [0.14.4] - 2020-02-18
+### Added
+- A "hunger vital signs" form (with FHIRPath expressions) to the tests.
+### Changed
+- Updated to lforms 20.2.0 from 20.0.0 (mostly fixes, plus one feature
+  addition.)
+
+## [0.14.3] - 2020-02-18
+### Fixed
+- Fixed a bug that Questionnaires names, instead of titles, are displayed in search box.
+
 ## [0.14.2] - 2020-02-13
 ### Fixed
 - Tests which broke due to data changes on the servers we use for testing.
